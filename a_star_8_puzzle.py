@@ -106,17 +106,17 @@ class Puzzle:
             print("  | ")
             print("  | ")
             print(" \\\'/ \n")
-            for i in cur.data:
-                for j in i:
+            for node in cur.data:
+                for j in node:
                     print(j,end=" ")
                 print("")
             """ If the difference between current and goal node is 0 we have reached the goal node"""
             if(self.h(cur.data) == 0):
                 break
             ''' otherowise, expand the state space (move U,D,L,R) '''
-            for i in cur.generate_child():
-                i.fval = self.f(i) #caluclate the f() value for each of the moves generated
-                self.open.append(i)
+            for node_chid in cur.generate_child():
+                node_chid.fval = self.f(node_chid) #caluclate the f() value for each of the moves generated
+                self.open.append(node_chid)
             self.closed.append(cur)
             ''' now that  we've explored all this node's children, remove it from the open list'''
             del self.open[0]
