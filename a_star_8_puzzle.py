@@ -65,7 +65,7 @@ class Puzzle:
         self.n = size
         self.open = []
         self.closed = []
-
+        self.goal = [['1', '2', '3'], ['4', '_', '5'], ['6', '7', '8']]
     def accept(self):
         """ Accepts the puzzle from the user """
         puz = []
@@ -74,16 +74,16 @@ class Puzzle:
             puz.append(temp)
         return puz
 
-    def f(self,start,goal):
+    def f(self,start):
         """ Heuristic Function to calculate hueristic value f(x) = h(x) + g(x) """
-        return self.h(start.data,goal)+start.level
+        return self.h(start.data)+start.level
 
-    def h(self,start,goal):
+    def h(self,start):
         """ Calculates the difference between the given puzzles """
         temp = 0
         for i in range(0,self.n):
             for j in range(0,self.n):
-                if start[i][j] != goal[i][j] and start[i][j] != '_':
+                if start[i][j] != self.goal[i][j] and start[i][j] != '_':
                     temp += 1
         return temp
         
@@ -93,10 +93,10 @@ class Puzzle:
         print("Enter the start state matrix \n")
         start = self.accept()
         #print("Enter the goal state matrix \n")        
-        goal = [['1', '2', '3'], ['4', '_', '5'], ['6', '7', '8']]
+        
 
         start = Node(start,0,0)
-        start.fval = self.f(start,goal)
+        start.fval = self.f(start)
         """ Put the start node in the open list"""
         self.open.append(start)
         print("\n\n")
@@ -111,12 +111,12 @@ class Puzzle:
                     print(j,end=" ")
                 print("")
             """ If the difference between current and goal node is 0 we have reached the goal node"""
-            if(self.h(cur.data,goal) == 0):
+            if(self.h(cur.data) == 0):
                 break
-            ''' otherwise, expand the state space (move U,D,L,R) '''
-            for node in cur.generate_child():
-                node.fval = self.f(node,goal) #caluclate the f() value for each of the moves generated
-                self.open.append(node)
+            ''' otherowise, expand the state space (move U,D,L,R) '''
+            for i in cur.generate_child():
+                i.fval = self.f(i) #caluclate the f() value for each of the moves generated
+                self.open.append(i)
             self.closed.append(cur)
             ''' now that  we've explored all this node's children, remove it from the open list'''
             del self.open[0]
