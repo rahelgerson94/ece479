@@ -7,6 +7,8 @@ Created on Wed Feb  9 13:18:45 2022
 """
 from pprint import pprint
 import numpy as np
+from scipy.spatial.distance import cityblock
+
 class Node:
     def __init__(self,data,level,fval):
         """ Initialize the node with the data, level of the node and the calculated fvalue """
@@ -82,6 +84,16 @@ class Puzzle:
 
     def h(self,start):
         """ Calculates the difference between the given puzzles """
+        temp = 0
+        for i, row in enumerate(start):
+            for j, cell in enumerate(row):
+                if cell != self.goal[i][j]  and start[i][j] != -1:
+                    #print(str(cell), str(self.goal[i][j])) 
+                    temp += 1
+        return temp
+    
+    def h1(self,start):
+        """ Calculates the manhattan distance between the given puzzles """
         temp = 0
         for i, row in enumerate(start):
             for j, cell in enumerate(row):
