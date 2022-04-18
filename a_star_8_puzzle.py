@@ -3,11 +3,11 @@
 """
 Created on Wed Feb  9 13:18:45 2022
 
-@author: rahelmizrahi
+@author: Rahel Gerson and Jazlan Davis
 """
 from pprint import pprint
 import numpy as np
-from scipy.spatial.distance import cityblock
+from scipy.spatial.distance import cityblock, cdist
 
 class Node:
     def __init__(self,data,level,fval):
@@ -94,6 +94,11 @@ class Puzzle:
     
     def h1(self,start):
         """ Calculates the manhattan distance between the given puzzles """
+        goal = self.flatten(self.goal )
+        board = self.flatten(start )
+        return sum(abs(b%3 - g%3) + abs(b//3 - g//3) for b, g in ((board.index(i), goal.index(i)) for i in range(1, 9)))
+        
+        '''
         temp = 0
         for i, row in enumerate(start):
             for j, cell in enumerate(row):
@@ -101,8 +106,10 @@ class Puzzle:
                     #print(str(cell), str(self.goal[i][j])) 
                     temp += 1
         return temp
-        
-
+        '''
+    def flatten(self, list2D):
+        return [item for sublist in list2D for item in sublist]
+    
     def process(self):
         """ Accept Start and Goal Puzzle state"""
         print("Enter the start state matrix \n")
@@ -141,6 +148,8 @@ class Puzzle:
             """ sort the opne list based on f value """
             self.open.sort(key = lambda x:x.fval,reverse=False)
 if __name__ == "__main__":
-
+    init = [[2, 8, 3], [1, 6, 4], [7, -1, 5]]
+    goal = [[1, 2, 3], [8, -1, 4], [7, 6, 5]]
     puz = Puzzle(3)
-    puz.process()
+   
+    #puz.process()

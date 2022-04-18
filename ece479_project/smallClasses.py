@@ -6,26 +6,31 @@ Created on Sat Apr  9 17:55:52 2022
 @author: rahelmizrahi
 """
 
-class waterStand:
+class WaterStand:
     def __init__(self, Type):
         self.Type = Type #chilled or room temp
 
 class Bottle:
-    def __init__(self, capacity, material):
-            self.capacity = lower(capacity) #4 gallons or 6 gallons
-            self.material = lower(material) #plastic or glass
-
-class waterColumn:
+    def __init__(self, capacity, material ):
+            self.capacity = capacity #4 gallons or 6 gallons
+            self.criticalLevel = 0.25
+            self.material = material.lower() #plastic or glass
+            self.currLevel = 0
+    def isLevelTooLow(self):
+        if self.currLevel != None and self.currLevel <= self.criticalLevel:
+            return True
+    def setLevel(self, amt):
+        #assert amt <= self.capacity, "error, amount cannot exceed capacity, which is {}" .format(self.capacity)
+        self.currLevel = amt
+class WaterColumn:
     def __init__(self):
-            self.waterStand = None #4 gallons or 6 gallons
-            self.bottle = None #plastic or glass
+            self.WaterStand = WaterStand("chilled") #4 gallons or 6 gallons
+            self.Bottle = Bottle(4 , "plastic") #plastic or glass
     
-    def addWaterStand(self, waterStandObj):
-        self.waterStand = waterStandObj
-   
     
-   def addBottle(self, bottleObj):
-        self.bottle = bottleObj
+    
+    
         
         
 if __name__ == "__main__":
+    pass
