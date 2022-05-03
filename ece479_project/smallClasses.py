@@ -22,6 +22,7 @@ class Bottle:
     def setLevel(self, amt):
         #assert amt <= self.capacity, "error, amount cannot exceed capacity, which is {}" .format(self.capacity)
         self.currLevel = amt
+
 class WaterColumn:
     def __init__(self):
             self.WaterStand = WaterStand("chilled") #4 gallons or 6 gallons

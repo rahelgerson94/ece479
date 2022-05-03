@@ -18,7 +18,7 @@ class Shelf:
     
     def printBottles(self):
         for b in self.Bottles:
-            print( "{}  " .format(b.currLevel) , delimter = ' ')
+            print( "{}  " .format(b.currLevel) , end = ' ')
     def removeWaterBottle(self, idx):
         if self.numBottles < self.capacity:
             del self.Bottles[idx]
