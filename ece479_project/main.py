@@ -13,8 +13,6 @@ from AIPS import AIPS
 import robot as Robot 
 
 
-    
-
 wb1 = Bottle(4, 'plastic')
 wb_full = Bottle(4, 'plastic')
 wb_full.setLevel(4)
@@ -43,7 +41,25 @@ x = a1.needReplenish() #returns False bc currLevel is 1, which is gt than 1/4
 if x == True:
     a1.replenish()
     
+    
 ''' replace if bottle on the water stand is empty'''
 replace = a1.needReplace()
 if replace == True: 
     a1.replace()
+    
+''' create 5 custumers '''
+A = AIPS()
+B = AIPS()
+C = AIPS()
+D = AIPS()
+E = AIPS()
+
+'''create the grid representing distance between customers'''
+
+#         A  B   C   D   E
+grid  = [[0, 10, 15, 20, 30], # A
+         [10, 0, 35, 25, 14], # B
+         [15, 35, 0, 30, 17], # C
+         [20, 25, 30, 0, 9],  # D
+         [8, 15, 4, 12, 0]]]  # E
+
