@@ -8,7 +8,7 @@ Created on Sat Apr  9 17:54:35 2022
 
 from smallClasses import Bottle as Bottle
 
-class Robot:
+class robot:
     
     ''' robot starts off with empty hand and holding nothing '''
     def __init__(self):
@@ -76,9 +76,9 @@ class Robot:
             new2.top = old
             
         if old.clear == True and new2.top == old and new1.top == new2:
-            Return True
-            else:
-                Return False
+            return True
+        else:
+            return False
 
 if __name__ == "__main__":
     pass

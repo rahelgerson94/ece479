@@ -7,21 +7,23 @@ Created on Sun Apr 17 23:38:42 2022
 """
 import shelf as shelf
 #from robot import Robot
-#import robot as Robot
+import robot as robot
 from smallClasses import WaterStand, Bottle, WaterColumn
-/Users/rahelmizrahi/Downloads/ece479_project/AIPS.py
+from itertools import permutations
+
 class AIPS:
-    def __init__(self, distGrid):
+    def __init__(self, distanceGrid, name):
         self.EmptyShelf = shelf.EmptyShelf() 
         self.FullShelf = shelf.FullShelf()
         self.WaterColumn = WaterColumn() 
-        self.distanceGrid = distGrid
+        self.distanceGrid = distanceGrid
+        self.name = name
         
     def replenish(self):
         ''' issued if there is only 1 bottle left on the full-bottle shelf 
             and the water level in the bottle on the water stand drops below 1/4 gallon.
         '''
-        assert self.FullShelf.getNumBottles() == 1, "we only replenish if number of bottles equals 1 and its cap. is less than 0.25 gal.\nNum bottles equals {}".format(self.FullShelf.getNumBottles())
+        assert self.FullShelf.getNumBottles() <= 1, "we only replenish if number of bottles equals 1 and its cap. is less than 0.25 gal.\nNum bottles equals {}".format(self.FullShelf.getNumBottles())
         #2 wb's dropped off at the full bottle shelf.
         
         wbFull = Bottle(4, 'plastic')
@@ -29,25 +31,28 @@ class AIPS:
         self.FullShelf.addWaterBottle(wbFull)
         self.FullShelf.addWaterBottle(wbFull)
         self.EmptyShelf.Bottles = [] #empty bottles collected by technician
-        self.FullShelf.vstacked = True 
-       
-        print("num bottles : {}" .format(self.FullShelf.numBottles))
-        print("empty bottles : {}" .format(self.EmptyShelf.numBottles))
+        self.FullShelf.vstacked = True
+        x = self.FullShelf.getNumBottles()
+        print('\n')
+        print('replenishing customer {}'.format(self.name))
+        print("num bottles : {}" .format(self.FullShelf.getNumBottles()))
+        print("empty bottles : {}" .format(self.EmptyShelf.getNumBottles()))
         print("full shelf has been restacked")
         
         
         ''' Robot Actions '''
+        '''
         # technician leaves two full bottles on the ground
         newBottle1 = Bottle(4, "plastic")
         newBottle2 = Bottle(4, "plastic")
         oldBottle = Bottle(4, "plastic")
         
         # call on robot to restock
-        done = robot.Robot().changeBottles(newBottle1, newBottle2, oldBottle)
+        done = robot.robot().changeBottles(newBottle1, newBottle2, oldBottle)
         
         if done == True:
             print("bottles have been restocked")
-            
+        '''
         
     
     def needReplenish(self):
@@ -78,8 +83,8 @@ class AIPS:
                 return True
        
     # implementation of traveling Salesman Problem
-    def travellingSalesmanProblem( self, s, goal):
-        V = len(self.distGrid[0]) 
+    def TSP(self, s, goal):
+        V = len(self.distanceGrid[0]) # 5
         # store all vertex apart from source vertex
         vertex = []
         for i in range(V):
@@ -87,7 +92,7 @@ class AIPS:
                 vertex.append(i)
 
         # store minimum weight Hamiltonian Cycle
-        min_path = maxsize
+        min_path = 10**10
         permList=permutations(vertex)
 
         # permutations([1,2,3]) yields
@@ -107,18 +112,18 @@ class AIPS:
                 # compute current path weight
                 currSrc = s
                 for currDst in path:
-                    print("currSrc = {}, currDst = {}".format(currSrc, currDst))
-                    current_pathweight += self.distGrid[currSrc][currDst]
+                    #print("currSrc = {}, currDst = {}".format(currSrc, currDst))
+                    current_pathweight += self.distanceGrid[currSrc][currDst]
                     path = currDst
-                current_pathweight += self.distGrid[currSrc][s]
+                current_pathweight += self.distanceGrid[currSrc][s]
         
                 # update minimum
                 min_path = min(min_path, current_pathweight)
-                print(min_path)
+                #print(min_path)
                 paths.append(path)
 
         return min_path
-
+    
     '''helper fct'''
     def truncateTuple( self, tupl, goal):
         tmp = []  

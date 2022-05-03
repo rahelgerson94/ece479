@@ -10,7 +10,7 @@ class Shelf:
         self.capacity = None
         
         self.Bottles = []
-        self.numBottles = len(self.Bottles)
+        
     
     def addWaterBottle(self, waterBottleObj):
         if self.getNumBottles() < self.capacity:
@@ -35,14 +35,14 @@ class FullShelf(Shelf):
         self.capacity = 3 #bottles
         self.numBottles = 0
         self.Bottles = []
-         
+    
 
 class EmptyShelf(Shelf):
     def __init__(self):
         self.capacity = 2 #bottles
         self.numBottles = 0
         self.Bottles = []
-
-
+    
 if __name__ == "__main__":
-    f = FullShelf()
+    pass
+    #f = FullShelf()

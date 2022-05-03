@@ -14,7 +14,7 @@ V = 4
 
 # implementation of traveling Salesman Problem
 def travellingSalesmanProblem(graph, s, goal):
-    V = 5
+    V = 4
     # store all vertex apart from source vertex
     vertex = []
     for i in range(V):
@@ -76,11 +76,12 @@ def truncateTuple( tupl, goal):
         
 # Driver Code
 if __name__ == "__main__":
+    pass
 
-	# matrix representation of graph
+    # matrix representation of graph
     graph = [[0, 10, 15, 20], 
              [10, 0, 35, 25],
-			 [15, 35, 0, 30], 
+             [15, 35, 0, 30], 
              [20, 25, 30, 0]]
     goal = 3
     start = 2
