@@ -69,26 +69,17 @@ customers = [
     AIPS(grid, 'D'), #3
     AIPS(grid, 'E'),#4
     ]
-
-
-
-
 '''create  a  search object to find optimal dispatch routes '''
 search = search(grid)
 ''' all customers are need of relenishing! need to do TSP to figure out shortest path'''
 ''' let's assume were currently at the dispatch center, which has index 0'''
 visited = []
 src = 0 #dispatch
-nextDst = search.visit( src, visited )
-''' replenish A '''
-customers[nextDst].replenish()
-'''add A to visted set '''
-visited.append(nextDst)
-
-''' now we need to visit the next custumer! let's find out who this will be '''
-src = nextDst
-nextDst = search.visit( src, visited )
-visited.append(nextDst)
+for i in range(0,5):
+    minDist, nextNode = search.visit( src, visited )
+    customers[nextNode].replenish()
+    visited.append(nextNode)
+    src = nextNode
 
 
 

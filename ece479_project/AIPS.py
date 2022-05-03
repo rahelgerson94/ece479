@@ -33,7 +33,7 @@ class AIPS:
         self.EmptyShelf.Bottles = [] #empty bottles collected by technician
         self.FullShelf.vstacked = True
         x = self.FullShelf.getNumBottles()
-        print('\n')
+        print('\n[REPLENISH]')
         print('replenishing customer {}'.format(self.name))
         print("num bottles : {}" .format(self.FullShelf.getNumBottles()))
         print("empty bottles : {}" .format(self.EmptyShelf.getNumBottles()))

@@ -83,8 +83,8 @@ class search:
             if i  not in prevGoals:
                 goal = min(goal, distances[i])
         node = np.where(np.array(distances) == goal)[0][0]
-        print("from origin, we will visit customer {}  ".format( self.nodeMap[node]))
-        return goal
+        print("[SEARCH] from {}, we will visit customer {} \n".format(self.nodeMap[src], self.nodeMap[node]))
+        return goal, node
         
             
     
