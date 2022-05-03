@@ -6,13 +6,16 @@ Created on Sun Apr 17 23:38:42 2022
 @author: rahelmizrahi
 """
 import shelf as shelf
+#from robot import Robot
+#import robot as Robot
 from smallClasses import WaterStand, Bottle, WaterColumn
-
+/Users/rahelmizrahi/Downloads/ece479_project/AIPS.py
 class AIPS:
-    def __init__(self):
-        self.EmptyShelf = shelf.EmptyShelf()
+    def __init__(self, distGrid):
+        self.EmptyShelf = shelf.EmptyShelf() 
         self.FullShelf = shelf.FullShelf()
-        self.WaterColumn = WaterColumn()
+        self.WaterColumn = WaterColumn() 
+        self.distanceGrid = distGrid
         
     def replenish(self):
         ''' issued if there is only 1 bottle left on the full-bottle shelf 
@@ -31,6 +34,21 @@ class AIPS:
         print("num bottles : {}" .format(self.FullShelf.numBottles))
         print("empty bottles : {}" .format(self.EmptyShelf.numBottles))
         print("full shelf has been restacked")
+        
+        
+        ''' Robot Actions '''
+        # technician leaves two full bottles on the ground
+        newBottle1 = Bottle(4, "plastic")
+        newBottle2 = Bottle(4, "plastic")
+        oldBottle = Bottle(4, "plastic")
+        
+        # call on robot to restock
+        done = robot.Robot().changeBottles(newBottle1, newBottle2, oldBottle)
+        
+        if done == True:
+            print("bottles have been restocked")
+            
+        
     
     def needReplenish(self):
         f = False
@@ -52,6 +70,64 @@ class AIPS:
         #pick a full bottle from the full bottle shelf, place it on the water bottle stand
         fullBottle = self.FullShelf.Bottles.pop()
         self.WaterColumn.Bottle = fullBottle
-       
     
+    '''sound the alarm if a leak is detected '''
+    def needAlarm(self):
+        for b in self.FullShelf.Bottles:
+            if b.leak == True:
+                return True
+       
+    # implementation of traveling Salesman Problem
+    def travellingSalesmanProblem( self, s, goal):
+        V = len(self.distGrid[0]) 
+        # store all vertex apart from source vertex
+        vertex = []
+        for i in range(V):
+            if i != s:
+                vertex.append(i)
+
+        # store minimum weight Hamiltonian Cycle
+        min_path = maxsize
+        permList=permutations(vertex)
+
+        # permutations([1,2,3]) yields
+        # (1, 2, 3)
+        # (1, 3, 2)
+        # (2, 1, 3)
+        # (2, 3, 1)
+        # (3, 1, 2)
+        # (3, 2, 1)
+        paths = []
+        for path in permList:
+            path = self.truncateTuple(path, goal)
+            if not( path in paths):
+                # store current Path weight(cost)
+                current_pathweight = 0
+        
+                # compute current path weight
+                currSrc = s
+                for currDst in path:
+                    print("currSrc = {}, currDst = {}".format(currSrc, currDst))
+                    current_pathweight += self.distGrid[currSrc][currDst]
+                    path = currDst
+                current_pathweight += self.distGrid[currSrc][s]
+        
+                # update minimum
+                min_path = min(min_path, current_pathweight)
+                print(min_path)
+                paths.append(path)
+
+        return min_path
+
+    '''helper fct'''
+    def truncateTuple( self, tupl, goal):
+        tmp = []  
+        for node in tupl:
+            if node != goal:
+                tmp.append(node)
+            else:
+                tmp.append(node)
+                break
+        return tuple(tmp)
+        
         
