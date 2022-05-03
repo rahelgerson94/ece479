@@ -10,18 +10,19 @@ from smallClasses import WaterStand, Bottle, WaterColumn
 from shelf import FullShelf, EmptyShelf
 from AIPS import AIPS
 import numpy as np
+from TSP import TSP
 #import robot as Robot 
 
-nodeMap = ['A', 'B', 'C', 'D', 'E']
-
+nodeMap = ['origin', 'A', 'B', 'C', 'D', 'E']
 
 '''create the grid representing distance between customers'''
-#         A  B   C   D   E
-grid  = [[0, 10, 15, 20, 30], # A
-         [10, 0, 35, 25, 14], # B
-         [15, 35, 0, 30, 17], # C
-         [20, 25, 30, 0, 9],  # D
-         [30, 14, 17, 9, 0]]  # E
+#          0  A  B   C   D   E
+grid  = [[0, 1, 1, 14, 15, 16], # 0
+         [1, 0, 10, 15, 20, 30], # A
+         [1, 10, 0, 35, 25, 14, ], # B
+         [14, 15, 35, 0, 30, 17], # C
+         [15, 20, 25, 30, 0, 9],  # D
+         [16, 30, 14, 17, 9, 0]]  # E
 
 ''' WATER BOTTLES '''
 wb1 = Bottle(4, 'plastic')
@@ -60,6 +61,7 @@ if replace == True:
 
 
 ''' create 5 custumers '''
+dispatch = AIPS(grid, 'origin') 
 A = AIPS(grid, 'A') #0
 B = AIPS(grid, 'B') #1
 C = AIPS(grid, 'C') #2
@@ -68,14 +70,16 @@ E = AIPS(grid, 'E') #4
 
 
 ''' all customers are need of relenishing! need to do TSP to figure out shortest path'''
-''' let's assume were currently at customer C's home. C has index 2  '''
-distances =  [A.TSP(2,dst) for dst in range(0,5)]   #distances from C to every node 
-nodeToVistFirst = np.argmin(distances)
-print("from customer {}, we will visit customer {}  ".format( nodeMap[2], nodeMap[nodeToVistFirst]))
+''' let's assume were currently at the dispatch center, which has index 0'''
+distances =  [TSP(grid, 0, dst) for dst in range(0,6)]   #distances from origin to every node 
+nodeToVist0 = np.argmin(distances)
+print("from origin, we will visit customer {}  ".format(  nodeMap[nodeToVist0]))
 A.replenish()
 
+''' now we need to visit the next custumer! let's find out who this will be '''
+distances =  [TSP(grid, nodeToVist0, dst) for dst in range(0,6)] 
+nodeToVist1 = np.argmin(distances)
+print("from {}, we will visit customer {}  ".format(nodeMap[nodeToVist0], nodeMap[nodeToVist1]))
 
 
-
-    
 

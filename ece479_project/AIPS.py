@@ -69,12 +69,13 @@ class AIPS:
         else:
             return False
     def replace(self):
-        # robott puts empty bottle on the empty bottle shelf
+        # robot puts empty bottle on the empty bottle shelf
         self.EmptyShelf.Bottles.insert(0, self.WaterColumn.Bottle)
         self.WaterColumn.Bottle = None 
         #pick a full bottle from the full bottle shelf, place it on the water bottle stand
         fullBottle = self.FullShelf.Bottles.pop()
         self.WaterColumn.Bottle = fullBottle
+        print('')
     
     '''sound the alarm if a leak is detected '''
     def needAlarm(self):
@@ -82,57 +83,6 @@ class AIPS:
             if b.leak == True:
                 return True
        
-    # implementation of traveling Salesman Problem
-    def TSP(self, s, goal):
-        V = len(self.distanceGrid[0]) # 5
-        # store all vertex apart from source vertex
-        vertex = []
-        for i in range(V):
-            if i != s:
-                vertex.append(i)
-
-        # store minimum weight Hamiltonian Cycle
-        min_path = 10**10
-        permList=permutations(vertex)
-
-        # permutations([1,2,3]) yields
-        # (1, 2, 3)
-        # (1, 3, 2)
-        # (2, 1, 3)
-        # (2, 3, 1)
-        # (3, 1, 2)
-        # (3, 2, 1)
-        paths = []
-        for path in permList:
-            path = self.truncateTuple(path, goal)
-            if not( path in paths):
-                # store current Path weight(cost)
-                current_pathweight = 0
-        
-                # compute current path weight
-                currSrc = s
-                for currDst in path:
-                    #print("currSrc = {}, currDst = {}".format(currSrc, currDst))
-                    current_pathweight += self.distanceGrid[currSrc][currDst]
-                    path = currDst
-                current_pathweight += self.distanceGrid[currSrc][s]
-        
-                # update minimum
-                min_path = min(min_path, current_pathweight)
-                #print(min_path)
-                paths.append(path)
-
-        return min_path
-    
-    '''helper fct'''
-    def truncateTuple( self, tupl, goal):
-        tmp = []  
-        for node in tupl:
-            if node != goal:
-                tmp.append(node)
-            else:
-                tmp.append(node)
-                break
-        return tuple(tmp)
-        
+   
+   
         

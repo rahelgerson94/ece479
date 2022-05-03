@@ -10,15 +10,14 @@ Created on Sat Apr  9 17:35:01 2022
 # problem using naive approach.
 from sys import maxsize
 from itertools import permutations
-V = 4
 
 # implementation of traveling Salesman Problem
-def travellingSalesmanProblem(graph, s, goal):
-    V = 4
+def TSP(graph, s, goal):
     # store all vertex apart from source vertex
+    V = len(graph[0])
     vertex = []
     for i in range(V):
-        if i != s:
+        if i != s and i!= 0:
             vertex.append(i)
 
     # store minimum weight Hamiltonian Cycle
@@ -42,14 +41,14 @@ def travellingSalesmanProblem(graph, s, goal):
             # compute current path weight
             currSrc = s
             for currDst in path:
-                print("currSrc = {}, currDst = {}".format(currSrc, currDst))
+                #print("currSrc = {}, currDst = {}".format(currSrc, currDst))
                 current_pathweight += graph[currSrc][currDst]
                 path = currDst
             current_pathweight += graph[currSrc][s]
     
             # update minimum
             min_path = min(min_path, current_pathweight)
-            print(min_path)
+            #print(min_path)
             paths.append(path)
 
     return min_path
@@ -78,16 +77,16 @@ def truncateTuple( tupl, goal):
 if __name__ == "__main__":
     pass
 
-    # matrix representation of graph
-    graph = [[0, 10, 15, 20], 
-             [10, 0, 35, 25],
-             [15, 35, 0, 30], 
-             [20, 25, 30, 0]]
-    goal = 3
-    start = 2
-    print( "min cost from node{} to node{} is {}.".format(start, goal, travellingSalesmanProblem(graph, start, goal)))
-    # perms = permutations([1,2,3])
-    # for perm in perms:
-    #     print(truncateTuple(perm, 2))
+    # # matrix representation of graph
+    # graph = [[0, 10, 15, 20], 
+    #          [10, 0, 35, 25],
+    #          [15, 35, 0, 30], 
+    #          [20, 25, 30, 0]]
+    # goal = 3
+    # start = 2
+    # print( "min cost from node{} to node{} is {}.".format(start, goal, travellingSalesmanProblem(graph, start, goal)))
+    # # perms = permutations([1,2,3])
+    # # for perm in perms:
+    # #     print(truncateTuple(perm, 2))
     
    
