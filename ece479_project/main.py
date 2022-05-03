@@ -72,7 +72,6 @@ E = AIPS(grid, 'E') #4
 distances =  [A.TSP(2,dst) for dst in range(0,5)]   #distances from C to every node 
 nodeToVistFirst = np.argmin(distances)
 print("from customer {}, we will visit customer {}  ".format( nodeMap[2], nodeMap[nodeToVistFirst]))
-
 A.replenish()
 
 
