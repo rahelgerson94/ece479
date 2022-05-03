@@ -10,10 +10,10 @@ from smallClasses import WaterStand, Bottle, WaterColumn
 from shelf import FullShelf, EmptyShelf
 from AIPS import AIPS
 import numpy as np
-from TSP import TSP
+from search import search
 #import robot as Robot 
 
-nodeMap = ['origin', 'A', 'B', 'C', 'D', 'E']
+
 
 '''create the grid representing distance between customers'''
 #          0  A  B   C   D   E
@@ -23,6 +23,7 @@ grid  = [[0, 1, 1, 14, 15, 16], # 0
          [14, 15, 35, 0, 30, 17], # C
          [15, 20, 25, 30, 0, 9],  # D
          [16, 30, 14, 17, 9, 0]]  # E
+
 
 ''' WATER BOTTLES '''
 wb1 = Bottle(4, 'plastic')
@@ -53,7 +54,6 @@ x = a1.needReplenish() #returns False bc currLevel is 1, which is gt than 1/4
 if x == True:
     a1.replenish()
     
-    
 ''' replace if bottle on the water stand is empty'''
 replace = a1.needReplace()
 if replace == True: 
@@ -61,25 +61,37 @@ if replace == True:
 
 
 ''' create 5 custumers '''
-dispatch = AIPS(grid, 'origin') 
-A = AIPS(grid, 'A') #0
-B = AIPS(grid, 'B') #1
-C = AIPS(grid, 'C') #2
-D = AIPS(grid, 'D') #3
-E = AIPS(grid, 'E') #4
+customers = [
+    AIPS(grid, 'disptach') ,
+    AIPS(grid, 'A'), #0
+    AIPS(grid, 'B'), #1
+    AIPS(grid, 'C'), #2
+    AIPS(grid, 'D'), #3
+    AIPS(grid, 'E'),#4
+    ]
 
 
+
+
+'''create  a  search object to find optimal dispatch routes '''
+search = search(grid)
 ''' all customers are need of relenishing! need to do TSP to figure out shortest path'''
 ''' let's assume were currently at the dispatch center, which has index 0'''
-distances =  [TSP(grid, 0, dst) for dst in range(0,6)]   #distances from origin to every node 
-nodeToVist0 = np.argmin(distances)
-print("from origin, we will visit customer {}  ".format(  nodeMap[nodeToVist0]))
-A.replenish()
+visited = []
+src = 0 #dispatch
+nextDst = search.visit( src, visited )
+''' replenish A '''
+customers[nextDst].replenish()
+'''add A to visted set '''
+visited.append(nextDst)
 
 ''' now we need to visit the next custumer! let's find out who this will be '''
-distances =  [TSP(grid, nodeToVist0, dst) for dst in range(0,6)] 
-nodeToVist1 = np.argmin(distances)
-print("from {}, we will visit customer {}  ".format(nodeMap[nodeToVist0], nodeMap[nodeToVist1]))
+src = nextDst
+nextDst = search.visit( src, visited )
+visited.append(nextDst)
+
+
+
 
 
 

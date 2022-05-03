@@ -10,14 +10,15 @@ Created on Sat Apr  9 17:35:01 2022
 # problem using naive approach.
 from sys import maxsize
 from itertools import permutations
-
+import numpy as np
 class search:
     def __init__(self, grid):
         self.grid = grid
+        self.nodeMap = ['origin', 'A', 'B', 'C', 'D', 'E']
     # implementation of traveling Salesman Problem
-    def TSP(self, graph, s, goal):
+    def TSP(self, s, goal):
         # store all vertex apart from source vertex
-        V = len(graph[0])
+        V = len(self.grid[0])
         vertex = []
         for i in range(V):
             if i != s and i!= 0:
@@ -45,9 +46,9 @@ class search:
                 currSrc = s
                 for currDst in path:
                     #print("currSrc = {}, currDst = {}".format(currSrc, currDst))
-                    current_pathweight += graph[currSrc][currDst]
+                    current_pathweight += self.grid[currSrc][currDst]
                     path = currDst
-                current_pathweight += graph[currSrc][s]
+                current_pathweight += self.grid[currSrc][s]
         
                 # update minimum
                 min_path = min(min_path, current_pathweight)
@@ -75,12 +76,14 @@ class search:
                 break
         return tuple(tmp)
         
-    def visit(self, grid, src, prevGoals):
-        distances =  [self.TSP(grid, src, dst) for dst in range(0,6)] 
+    def visit(self, src, prevGoals):
+        distances =  [self.TSP( src, dst) for dst in range(0,6)] 
         goal = 10000000
         for i, dst in enumerate(distances):
             if i  not in prevGoals:
                 goal = min(goal, distances[i])
+        node = np.where(np.array(distances) == goal)[0][0]
+        print("from origin, we will visit customer {}  ".format( self.nodeMap[node]))
         return goal
         
             
